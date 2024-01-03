@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Home values per square foot in Pima County</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="description" content="An interactive map of residential properties in Pima County that shows value per square foot by color gradient.">
+<!-- itemprop tags for Google -->
+<meta itemprop="name" content="Home values per square foot in Pima County">
+<meta itemprop="description" content="An interactive map of residential properties in Pima County that shows value per square foot by color gradient.">
+<meta itemprop="image" content="https://lukeknipe.com/pima_property_values/og.png">
+<!-- og tags for Facebook -->
+<meta property="og:title" content="Home values per square foot in Pima County" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content="https://lukeknipe.com/pima_property_values/">
+<meta property="og:type" content="website">
+<meta property="og:description" content="An interactive map of residential properties in Pima County that shows value per square foot by color gradient.">
+<meta property="og:image" content="https://lukeknipe.com/pima_property_values/og.png">
+<meta property="og:image:alt" content="Home values per square foot in Pima County">
+<!-- Twitter tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Home values per square foot in Pima County">
+<meta name="twitter:description" content="An interactive map of residential properties in Pima County that shows value per square foot by color gradient.">
+<meta name="twitter:image" content="https://lukeknipe.com/pima_property_values/og.png">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<link rel="canonical" href="https://lukeknipe.com/pima_property_values" />
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div id="map"></div>
+<div class="map-overlay" id="legend"><b>Home value per sqft</b><br><br></div>
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoibHVrZWtuaXBlIiwiYSI6ImNsNW13ajU1azAwZmszZXBxeWV0ZWtlaTgifQ.llc0hOFsg4QzV7tiR1jLdg';
+
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/lukeknipe/clqva5hd200cg01pz0gvzgxdp', // style URL
+        center: [-118.3, 34.0], // starting position [lng, lat]
+        zoom: 9 // starting zoom
+    });
+
+    map.on('load', function () {
+      map.addSource('value_per', {
+        type: 'vector',
+        url: 'mapbox://lukeknipe.0tak15ew'  // Tileset URL
+      });
+
+      map.addLayer({
+        'id': 'value_per',
+        'type': 'circle',
+        'source': 'value_per',
+        'source-layer': 'LA_value_per_newer',
+        paint: {
+          'circle-opacity': 0 // Setting opacity to zero because this feature is only here to supply data to the popup
+        }
+
+      })
+
+      map.on('click', 'value_per', function (e) {
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var address = e.features[0].properties.SitusFullA;
+        var value = e.features[0].properties.VALUE;
+        var sqft = e.features[0].properties.SQFT;
+//        var value_per = e.features[0].properties.VALUE_PER;
+        var vp = value/sqft;
+        let value_per = vp.toFixed(2);
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        new mapboxgl.Popup()
+          .setLngLat(coordinates)
+          .setHTML(address + "<br>2024 Value: " + value + "<br>Square Footage: " + sqft + "<br>Value/sqft: <b>$" + value_per + "</b>")
+          .addTo(map);
+      });
+
+      map.on('mouseenter', 'value_per', function () {
+        map.getCanvas().style.cursor = 'pointer';
+      });
+
+      map.on('mouseleave', 'value_per', function () {
+        map.getCanvas().style.cursor = '';
+      });
+
+      // define layer names
+      const layers = [
+        '0 - 133',
+        '133 - 144',
+        '144 - 152',
+        '152 - 159',
+        '159 - 165',
+        '165 - 172',
+        '172 - 180',
+        '180 - 188',
+        '188 - 199',
+        '199 - 214',
+        '214 - 240',
+        '240 - 713',
+      ];
+
+    const colors = [
+        '#2b83ba',
+        '#59a4b2',
+        '#88c5aa',
+        '#b3e0a7',
+        '#d2edb0',
+        '#f0f9ba',
+        '#fff1ae',
+        '#fed38c',
+        '#feb669',
+        '#f3854e',
+        '#e54f35',
+        '#d7191c'
+      ];
+
+
+    // create legend
+      const legend = document.getElementById('legend');
+
+      layers.forEach((layer, i) => {
+        const color = colors[i];
+        const item = document.createElement('div');
+        const key = document.createElement('span');
+        key.className = 'legend-key';
+        key.style.backgroundColor = color;
+
+        const value = document.createElement('span');
+        value.innerHTML = `${layer}`;
+        item.appendChild(key);
+        item.appendChild(value);
+        legend.appendChild(item);
+      });
+
+      });
+
+      function Hide(HideID) 
+ {
+  HideID.style.display = "none"; 
+ };
+
+</script>
+
+<div class="header">
+  <span class="lk"><a href="https://lukeknipe.com">LK</a></span><span class="path"> > <a href="https://lukeknipe.com/maps">Maps</a></span>
+</div>
+
+<div class="ShowHide" id="Bar">
+  <div id="right">
+    <a href="#" onclick="Hide(Bar);">X</a>
+  </div>
+  <div id="left">
+    <b>About this map:</b><br><br>Values and square footages are based on data published by the Pima County Assessor for Tax Year 2024.
+  </div>
+</div>
+
+</body>
+</html>
