@@ -73,7 +73,7 @@
 
         new mapboxgl.Popup()
           .setLngLat(coordinates)
-          .setHTML(ain + "<br>" + address + "<br>2021 Value: " + value + "<br>Square Footage: " + sqft + "<br>Value/sqft: <b>$" + value_per + "</b>")
+          .setHTML("<a href='https://portal.assessor.lacounty.gov/parceldetail/" + ain + "'>" + ain + "</a><br>" + address + "<br>2021 Value: " + value + "<br>Square Footage: " + sqft + "<br>Value/sqft: <b>$" + value_per + "</b>")
           .addTo(map);
       });
 
