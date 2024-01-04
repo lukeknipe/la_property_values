@@ -59,6 +59,7 @@
 
       map.on('click', 'value_per', function (e) {
         var coordinates = e.features[0].geometry.coordinates.slice();
+        var ain = e.features[0].properties.AIN;
         var address = e.features[0].properties.SitusFullA;
         var value = e.features[0].properties.VALUE;
         var sqft = e.features[0].properties.SQFT;
@@ -72,7 +73,7 @@
 
         new mapboxgl.Popup()
           .setLngLat(coordinates)
-          .setHTML(address + "<br>2024 Value: " + value + "<br>Square Footage: " + sqft + "<br>Value/sqft: <b>$" + value_per + "</b>")
+          .setHTML(ain + "<br>" + address + "<br>2021 Value: " + value + "<br>Square Footage: " + sqft + "<br>Value/sqft: <b>$" + value_per + "</b>")
           .addTo(map);
       });
 
