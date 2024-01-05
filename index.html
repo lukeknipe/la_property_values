@@ -73,7 +73,7 @@
 
         new mapboxgl.Popup()
           .setLngLat(coordinates)
-          .setHTML("<a href='https://portal.assessor.lacounty.gov/parceldetail/" + ain + "' target='_blank'>" + ain + "</a><br>" + address + "<br>2021 Value: " + value + "<br>Square Footage: " + sqft + "<br>Value/sqft: <b>$" + value_per + "</b>")
+          .setHTML("AIN: <a href='https://portal.assessor.lacounty.gov/parceldetail/" + ain + "' target='_blank'>" + ain + "</a><br>" + address + "<br>2021 Value: " + value + "<br>Square Footage: " + sqft + "<br>Value/sqft: <b>$" + value_per + "</b>")
           .addTo(map);
       });
 
@@ -87,18 +87,18 @@
 
       // define layer names
       const layers = [
-        '0 - 133',
-        '133 - 144',
-        '144 - 152',
-        '152 - 159',
-        '159 - 165',
-        '165 - 172',
-        '172 - 180',
-        '180 - 188',
-        '188 - 199',
-        '199 - 214',
-        '214 - 240',
-        '240 - 713',
+        '0 - 71',
+        '71 - 123',
+        '123 - 159',
+        '159 - 189',
+        '189 - 220',
+        '220 - 255',
+        '255 - 294',
+        '294 - 338',
+        '338 - 389',
+        '389 - 459',
+        '459 - 584',
+        '584 +',
       ];
 
     const colors = [
@@ -152,7 +152,7 @@
     <a href="#" onclick="Hide(Bar);">X</a>
   </div>
   <div id="left">
-    <b>About this map:</b><br><br>Values and square footages are based on data published by the Los Angeles County Assessor for Tax Year 2021.
+    <b>About this map:</b><br><br>Values and square footages are based on data published by the Los Angeles County Assessor for Tax Year 2021. Click on any dot for a pop-up with information about the underlying property. For even more information, click on the AIN in the pop-up to view the property's page on the L.A. County Assessor Portal.
   </div>
 </div>
 
